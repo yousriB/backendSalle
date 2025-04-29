@@ -47,6 +47,11 @@ const eventSchema = new mongoose.Schema({
     type: [String],
     enum: ['dj', 'magic show', 'fire work', 'dancer'], 
     default: []
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 });
 

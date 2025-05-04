@@ -13,6 +13,15 @@ const eventSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  duration: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+  paymentMethod: {
+    type: String,
+    required: true
+  },
   foodType: {
     type: String,
     required: true
@@ -23,16 +32,15 @@ const eventSchema = new mongoose.Schema({
   },
   numberOfSeats: {
     type: Number,
-    required: true
+    required: true,
+    min: 1
   },
   typeEvent: {
     type: String,
-    enum: ['birthday', 'marriage'], 
     required: true
   },
   local: {
     type: String,
-    enum: ['salle 1', 'salle2', 'home'],
     required: true
   },
   transport: {
@@ -50,12 +58,19 @@ const eventSchema = new mongoose.Schema({
   },
   entertainment: {
     type: [String],
-    enum: ['dj', 'magic show', 'fire work', 'dancer'], 
     default: []
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  totalPrice: {
+    type: Number,
     required: true
   }
 });

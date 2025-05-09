@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../utils/mailer');
+
 
 exports.registerUser = async (req, res) => {
   try {
@@ -24,6 +26,9 @@ exports.registerUser = async (req, res) => {
     });
 
     await user.save();
+
+    // Send registration email
+    await sendEmail(user.email, 'registration', { name });
 
     // Return JWT
     const payload = {

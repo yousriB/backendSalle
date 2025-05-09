@@ -1,5 +1,5 @@
 const Event = require("../models/Event");
-const { sendApprovalEmail } = require('../utils/mailer'); // Import this
+const { sendEmail } = require('../utils/mailer'); // Import this
 
 exports.getAllEvents = async (req, res) => {
   try {
@@ -122,7 +122,7 @@ exports.createEvent = async (req, res) => {
 
 exports.updateEventStatus = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id).populate('userId'); // populates user details
+    const event = await Event.findById(req.params.id).populate('userId');
 
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
@@ -136,21 +136,22 @@ exports.updateEventStatus = async (req, res) => {
     event.status = status;
     await event.save();
 
-    if (
-      status === 'Approved' &&
-      event.userId &&
-      event.userId.email
-    ) {
-      await sendApprovalEmail(
-        event.userId.email,
-        event.title,
-        event.date.toLocaleDateString()
-      );
+    if (event.userId && event.userId.email) {
+      const emailData = {
+        bookingTitle: event.title,
+        bookingDate: event.date.toLocaleDateString()
+      };
+
+      if (status === 'Approved') {
+        await sendEmail(event.userId.email, 'bookingApproval', emailData);
+      } else if (status === 'Rejected') {
+        await sendEmail(event.userId.email, 'bookingRejection', emailData);
+      }
     }
 
     res.json(event);
   } catch (err) {
-    console.error(err.message);
+    console.error('Error updating event status:', err.message);
     res.status(500).send("Server error");
   }
 };

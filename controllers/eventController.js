@@ -39,9 +39,7 @@ exports.createEvent = async (req, res) => {
   try {
     const { 
       title,
-      time,
       date,
-      duration,
       paymentMethod,
       foodType,
       decorationType,
@@ -51,20 +49,16 @@ exports.createEvent = async (req, res) => {
       transport = false,
       security = false,
       entertainment = [],
+      others = [],
       userId,
       totalPrice
     } = req.body;
 
     // Basic validation
-    if (!title || !time || !date || !duration || !paymentMethod || 
+    if (!title || !date || !paymentMethod || 
         !foodType || !decorationType || !numberOfSeats || !typeEvent || 
-        !local || !userId) {
+        !local || !userId ) {
       return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    // Validate duration is positive number
-    if (duration < 1) {
-      return res.status(400).json({ message: "Duration must be at least 1 hour" });
     }
 
     // Validate number of seats is positive
@@ -86,9 +80,7 @@ exports.createEvent = async (req, res) => {
 
     const eventData = {
       title,
-      time,
       date: bookingDate,
-      duration,
       paymentMethod,
       foodType,
       decorationType,
@@ -171,7 +163,6 @@ exports.updateEvent = async (req, res) => {
   try {
     const {
       title,
-      time,
       date,
       foodType,
       decorationType,
@@ -181,6 +172,7 @@ exports.updateEvent = async (req, res) => {
       transport,
       security,
       entertainment,
+      others,
       totalPrice
     } = req.body;
 
@@ -191,7 +183,6 @@ exports.updateEvent = async (req, res) => {
     }
 
     event.title = title || event.title;
-    event.time = time || event.time;
     event.date = date || event.date;
     event.foodType = foodType || event.foodType;
     event.decorationType = decorationType || event.decorationType;
@@ -201,6 +192,7 @@ exports.updateEvent = async (req, res) => {
     event.transport = transport || event.transport;
     event.security = security || event.security;
     event.entertainment = entertainment || event.entertainment;
+    event.others = others || event.others;
     event.totalPrice = totalPrice || event.totalPrice;
     await event.save();
     res.json(event);

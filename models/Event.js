@@ -5,30 +5,21 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  time: {
-    type: String,
-    required: true
-  },
   date: {
     type: Date,
     required: true
-  },
-  duration: {
-    type: Number,
-    required: true,
-    min: 1
   },
   paymentMethod: {
     type: String,
     required: true
   },
-  foodType: {
-    type: String,
-    required: true
+ foodType: {
+    type: [String],
+    default: []
   },
   decorationType: {
-    type: String,
-    required: true
+    type: [String],
+    default: []
   },
   numberOfSeats: {
     type: Number,
@@ -56,7 +47,11 @@ const eventSchema = new mongoose.Schema({
     enum: ['Pending', 'Approved', 'Rejected'],
     default: 'Pending'
   },
-  entertainment: {
+ entertainment: {
+    type: [String],
+    default: []
+  },
+   others: {
     type: [String],
     default: []
   },

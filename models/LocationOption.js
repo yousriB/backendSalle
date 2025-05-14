@@ -17,6 +17,11 @@ const locationOptionSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+   price: {
+    type: Number,
+    required: true,
+    default: 0
   }
 });
 

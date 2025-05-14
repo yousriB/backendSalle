@@ -26,4 +26,10 @@ router.post('/entertainment-options', adminController.addEntertainmentOption);
 router.put('/entertainment-options/:value', adminController.updateEntertainmentOption);
 router.delete('/entertainment-options/:value', adminController.deleteEntertainmentOption);
 
+// Other Options
+router.get('/other-options', adminController.getOtherOptions);
+router.post('/other-options', adminController.addOtherOption);
+router.put('/other-options/:value', adminController.updateOtherOption);
+router.delete('/other-options/:value', adminController.deleteOtherOption);
+
 module.exports = router;

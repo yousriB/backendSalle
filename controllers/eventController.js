@@ -72,10 +72,22 @@ exports.createEvent = async (req, res) => {
       return res.status(400).json({ message: "Number of seats must be at least 1" });
     }
 
+    const bookingDate = new Date(date);
+
+    // Check for existing approved event on the same date
+    const existingEvent = await Event.findOne({
+      date: bookingDate,
+      status: 'Approved'
+    });
+
+    if (existingEvent) {
+      return res.status(409).json({ message: "This date is reserved" });
+    }
+
     const eventData = {
       title,
       time,
-      date: new Date(date),
+      date: bookingDate,
       duration,
       paymentMethod,
       foodType,
